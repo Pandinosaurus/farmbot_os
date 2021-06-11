@@ -6,6 +6,7 @@ defmodule FarmbotCore.Firmware.InboundSideEffects do
     BotState,
     Firmware.TxBuffer,
     FirmwareEstopTimer,
+    Firmware.UARTCoreSupport,
     Leds
   }
 
@@ -139,6 +140,7 @@ defmodule FarmbotCore.Firmware.InboundSideEffects do
   end
 
   defp reduce({:not_configured, _}, state) do
+    if state.uart_pid, do: UARTCoreSupport.uart_send(state.uart_pid, "F83 Q0")
     busy()
     state
   end
